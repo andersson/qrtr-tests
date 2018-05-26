@@ -43,6 +43,8 @@ void print_hex_dump(const char *prefix, const void *buf, size_t len);
 		(type *)((char *)__mptr - offsetof(type, member)); \
 		})
 
-#define __packed __attribute__((packed))
+#ifndef __packed
+#define __packed __attribute__((__packed__))
+#endif
 
 #endif

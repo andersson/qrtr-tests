@@ -5,8 +5,16 @@
 #include <linux/socket.h>
 #include <linux/types.h>
 
+#ifndef AF_QIPCRTR
+#define AF_QIPCRTR 42
+#endif
+
 #define QRTR_NODE_BCAST	0xffffffffu
 #define QRTR_PORT_CTRL	0xfffffffeu
+
+#ifndef __packed
+#define __packed __attribute__((__packed__))
+#endif
 
 struct sockaddr_qrtr {
 	__kernel_sa_family_t sq_family;

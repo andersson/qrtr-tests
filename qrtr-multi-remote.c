@@ -9,72 +9,13 @@
 #include <unistd.h>
 
 #include "qrtr.h"
+#include "qrtr-test.h"
 #include "util.h"
 
 /*
  * Register two nodes on a single endpoint, simulating a remote with multiple
  * CPUs, and send a simple message to each one.
  */
-
-struct qrtr_hdr_v1 {
-	__le32 version;
-	__le32 type;
-	__le32 src_node_id;
-	__le32 src_port_id;
-	__le32 confirm_rx;
-	__le32 size;
-	__le32 dst_node_id;
-	__le32 dst_port_id;
-} __packed;
-
-struct qrtr_node {
-	int node_id;
-
-	int fd;
-};
-
-static ssize_t send_ctrl_message(struct qrtr_node *node, int type, const void *data, size_t len)
-{
-	struct qrtr_hdr_v1 hdr = {};
-	struct iovec iov[2];
-
-	hdr.version = 1;
-	hdr.type = type;
-	hdr.src_node_id = node->node_id;
-	hdr.src_port_id = QRTR_PORT_CTRL;
-	hdr.confirm_rx = 0;
-	hdr.size = len;
-	hdr.dst_node_id = QRTR_NODE_BCAST;
-	hdr.dst_port_id = QRTR_PORT_CTRL;
-
-	iov[0].iov_base = &hdr;
-	iov[0].iov_len = sizeof(hdr);
-
-	iov[1].iov_base = (void *)data;
-	iov[1].iov_len = len;
-
-	return writev(node->fd, iov, 2);
-}
-
-static ssize_t qrtr_node_hello(struct qrtr_node *node)
-{
-	struct qrtr_ctrl_pkt pkt = {};
-
-	pkt.cmd = QRTR_TYPE_HELLO;
-
-	return send_ctrl_message(node, pkt.cmd, &pkt, sizeof(pkt));
-}
-
-struct qrtr_node *qrtr_node_new(int node_id, int fd)
-{
-	struct qrtr_node *node;
-
-	node = calloc(1, sizeof(*node));
-	node->node_id = node_id;
-	node->fd = fd;
-
-	return node;
-}
 
 static ssize_t send_ping(int sock, int node)
 {
