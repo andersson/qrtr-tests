@@ -1,0 +1,3 @@
+*.o
+qrtr-multi-remote
+qrtr-recv-no-drops
