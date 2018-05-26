@@ -3,7 +3,9 @@
 all:
 
 TESTS := qrtr-multi-remote \
-	 qrtr-recv-no-drops
+	 qrtr-recv-no-drops \
+	 qrtr-confirm-rx-usage \
+
 
 CFLAGS := -Wall -g -O2
 LDFLAGS :=
