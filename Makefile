@@ -4,6 +4,7 @@ all:
 
 TESTS := qrtr-multi-remote \
 	 qrtr-recv-no-drops \
+	 qrtr-resume-tx-indefinite \
 	 qrtr-confirm-rx-usage \
 
 
