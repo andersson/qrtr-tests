@@ -88,6 +88,8 @@ static int run_receiver(struct qrtr_node *node)
 			if (hdr.confirm_rx) {
 				printf("confirm_rx set\n");
 				count[bucket] = 0;
+
+				qrtr_resume_tx(node, hdr.dst_node_id, hdr.dst_port_id, hdr.src_node_id, hdr.src_port_id);
 			}
 		}
 	}

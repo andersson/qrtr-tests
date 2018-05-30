@@ -44,6 +44,34 @@ ssize_t qrtr_node_hello(struct qrtr_node *node)
 	return send_ctrl_message(node, pkt.cmd, &pkt, sizeof(pkt));
 }
 
+void qrtr_resume_tx(struct qrtr_node *node, int local_node, int local_port, int remote_node, int remote_port)
+{
+	struct qrtr_ctrl_pkt pkt = {};
+	struct qrtr_hdr_v1 hdr = {};
+	struct iovec iov[2];
+
+	hdr.version = 1;
+	hdr.type = QRTR_TYPE_RESUME_TX;
+	hdr.src_node_id = local_node;
+	hdr.src_port_id = local_port;
+	hdr.confirm_rx = 0;
+	hdr.size = sizeof(pkt);
+	hdr.dst_node_id = remote_node;
+	hdr.dst_port_id = remote_port;
+
+	iov[0].iov_base = &hdr;
+	iov[0].iov_len = sizeof(hdr);
+
+	pkt.cmd = QRTR_TYPE_RESUME_TX;
+	pkt.client.node = hdr.src_node_id;
+	pkt.client.port = hdr.src_port_id;
+
+	iov[1].iov_base = &pkt;
+	iov[1].iov_len = sizeof(pkt);
+
+	return writev(node->fd, iov, 2);
+}
+
 struct qrtr_node *qrtr_node_new(int node_id, int fd)
 {
 	struct qrtr_node *node;

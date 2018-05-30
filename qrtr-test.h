@@ -22,6 +22,7 @@ struct qrtr_node {
 
 struct qrtr_node *qrtr_node_new(int node_id, int fd);
 ssize_t qrtr_node_hello(struct qrtr_node *node);
+void qrtr_resume_tx(struct qrtr_node *node, int local_node, int local_port, int remote_node, int remote_port);
 ssize_t send_data(struct qrtr_node *node, int port, struct sockaddr_qrtr *dest, const void *data, size_t len, int confirm_rx);
 
 #endif
