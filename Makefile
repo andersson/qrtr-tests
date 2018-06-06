@@ -6,6 +6,7 @@ TESTS := qrtr-multi-remote \
 	 qrtr-recv-no-drops \
 	 qrtr-resume-tx-indefinite \
 	 qrtr-confirm-rx-usage \
+	 qrtr-service-announcement \
 
 
 CFLAGS := -Wall -g -O2
